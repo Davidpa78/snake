@@ -55,19 +55,54 @@ void dibujar_comida(){
         move(row/2, col/2);
     mvprintw(aleatory_row, aleatory_col, "%c", FOOD_CHARACTER);
 }
-void mover_snake(){
-        while(tecla == KEY_UP)
-            snake[0].y--;
-    while(DERECHA)
+
+void obtener_tecla(int tecla){
+
+
+    getch();
+    tecla = getch();
+
+    switch(tecla){
+        case KEY_UP:
+            direccion = ARRIBA;
+            break;
+        case KEY_DOWN:
+            direccion = ABAJO;
+            break;
+        case KEY_LEFT:
+            direccion = IZQUIERDA;
+            break;
+        case KEY_RIGHT:
+            direccion = DERECHA;
+            break;
+
+    }
+
+
+}
+
+void mover_snake(int direccion){
+
+   /* int tecla = NULL;*/
+
+    /*getch();*/
+
+   switch(direccion/*tecla*/){
+       case ARRIBA:/*(tecla == KEY_UP)*/
+        snake[0].y--;
+    break;
+       case DERECHA:/*(tecla == KEY_RIGHT)*/
         snake[0].x++;
-     ABAJO
+    break;
+       case ABAJO:/*(tecla == KEY_DOWN)*/
         snake[0].y++;
     break;
-    case IZQUIERDA
+       case IZQUIERDA:/*(tecla == KEY_LEFT)*/
         snake[0].x--;
     break;
+   }
 }
-}
+
 
 void bienvenida(){
     clear();
@@ -92,7 +127,8 @@ void ganas(){
 
 int main(){
 
-    int option;
+    int tecla = 0;
+    bool finish= false;
 
     initscr();
     inicio();
@@ -109,29 +145,21 @@ int main(){
      * */
     //pierdes();
 
-    while(1){
+    while(finish == false){
 
-        option = getch();
-        if (option == KEY_UP){
 
-        }
-        if (option == KEY_DOWN){
 
-        }
-        if (option == KEY_LEFT){
 
-        }
-        if (option == KEY_RIGHT){
 
-        }
-        if (option == ESC){
-            endwin();
-            exit(0);
+
+
+
+
 
         }
 
 
-    }
+
 
     endwin();
 
