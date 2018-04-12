@@ -13,7 +13,8 @@
 #define MAX_LENGTH 20
 #define SNAKE_CHARACTER '*'
 #define FOOD_CHARACTER '+'
-bool fruta = false;
+#define WALL_CHAR '9'
+
 int row, col;
 int direccion;
 int snake_length = 1;
@@ -53,140 +54,167 @@ void dibujar_snake(){
             i++;
             */
     }
-}
+    }
 
     void dibujar_comida(){
         mvprintw(foody.x, foody.y, "%c", FOOD_CHARACTER);
 
     }
-
-
-
-    void comer(){
-        if((snake[0].x == foody.x)&&(snake[0].y == foody.y)){
-            snakepart cola = snake[snake_length-1];
-            snakepart nuevacola;
-            //CAMBIAR
-            nuevacola.x = cola.x+1;
-            nuevacola.y = cola.y+1;
-
-            snake[snake_length++] = nuevacola;
-
-            foody.y = rand()%col;
-            foody.x = rand()%row;
-
+   /* void dibujar_pared(){
+        for(int ncol=0; ncol<col; ncol++){
+            printw();
         }
-    }
-
-    void obtener_tecla(){
-        int tecla = getch();
-        switch(tecla){
-            case KEY_UP:
-                direccion = ARRIBA;
-                break;
-            case KEY_DOWN:
-                direccion = ABAJO;
-                break;
-            case KEY_LEFT:
-                direccion = IZQUIERDA;
-                break;
-            case KEY_RIGHT:
-                direccion = DERECHA;
-                break;
+        for(int nrow; nrow<row; nrow++){
+            printw();
         }
-    }
-
-    void cambiar_direccion(){
-
-        /* int tecla = NULL;*/
-
-        /*getch();*/
-            snakepart last = snake[0];
-        switch(direccion/*tecla*/){
-            case IZQUIERDA:/*(tecla == KEY_UP)*/
-                snake[0].y--;
-                break;
-            case ABAJO:/*(tecla == KEY_RIGHT)*/
-                snake[0].x++;
-                break;
-            case DERECHA:/*(tecla == KEY_DOWN)*/
-                snake[0].y++;
-                break;
-            case ARRIBA:/*(tecla == KEY_LEFT)*/
-                snake[0].x--;
-                break;
-
+    }*/
+   /* void drawLevel() {
+        for (int i=0; i<row; i++) {
+            mvaddch(i, 0, WALL_CHAR);
+            mvaddch(i, col-1, WALL_CHAR);
         }
-
-        snakepart last2;
-      for(int i=1;i<snake_length;i++){
-          last2 = snake[i];
-          snake[i] = last;
-          last = last2;
-      }
-    }
-
-    void comprueba(){
-
-    }
+        for (int i=1; i<col-1; i++) {
+            mvaddch(0, i, WALL_CHAR);
+            mvaddch(row-1, i, WALL_CHAR);
+        }
+        for (int i=25; i<55; i++) {
+            mvaddch(row/4, i, WALL_CHAR);
+            mvaddch((row/4)*3, i, WALL_CHAR);
+        }
+    }*/
 
 
-    void bienvenida(){
-        clear();
-        mvprintw(row/2.5, col/2, "Welcome to the Classic Snake Game.\n");
-        mvprintw(row/2, col/2, "Press any key to continue.");
-        refresh();
-    }
 
-    void pierdes(){
-        clear();
-        mvprintw(row/2.5, col/2,"Fin de la partida.\n");
-        mvprintw(row/2, col/2, "Has perdido.");
-        refresh();
-    }
 
-    void ganas(){
-        clear();
-        mvprintw(row/2.5, col/2, "Fin de la partida.\n");
-        mvprintw(row/2, col/2, "Has ganado.");
-        refresh();
-    }
+void comer(){
+    if((snake[0].x == foody.x)&&(snake[0].y == foody.y)){
+        snakepart cola = snake[snake_length-1];
+        snakepart nuevacola;
+        //CAMBIAR
+        nuevacola.x = cola.x+1;
+        nuevacola.y = cola.y+1;
 
-    int main(){
+        snake[snake_length++] = nuevacola;
 
-        initscr();
-        inicio();
-        foody.x = rand()%row;
         foody.y = rand()%col;
-        noecho();
-        keypad(stdscr, TRUE);
-        curs_set(0);
-        bienvenida();
-        getch();
-        clear();
-        inicio_snake();
-        ////dibujar_snake();
-        // dibujar_comida();
-        /*coges flecha
-         * mueves
-         *
-         * */
-        //pierdes();
+        foody.x = rand()%row;
 
-        while(1){
-            timeout(50);
-            obtener_tecla();
-            clear();
-            cambiar_direccion();
-            /*mover_snake();*/
-            comer();
-            dibujar_snake();
-            dibujar_comida();
-
-            refresh();
-            usleep(90000);
-        }
-        endwin();
-
-        return EXIT_SUCCESS;
     }
+}
+
+void obtener_tecla(){
+    int tecla = getch();
+    switch(tecla){
+        case KEY_UP:
+            direccion = ARRIBA;
+            break;
+        case KEY_DOWN:
+            direccion = ABAJO;
+            break;
+        case KEY_LEFT:
+            direccion = IZQUIERDA;
+            break;
+        case KEY_RIGHT:
+            direccion = DERECHA;
+            break;
+    }
+}
+
+void cambiar_direccion(){
+
+    /* int tecla = NULL;*/
+
+    /*getch();*/
+    snakepart last = snake[0];
+    switch(direccion/*tecla*/){
+        case IZQUIERDA:/*(tecla == KEY_UP)*/
+            snake[0].y--;
+            break;
+        case ABAJO:/*(tecla == KEY_RIGHT)*/
+            snake[0].x++;
+            break;
+        case DERECHA:/*(tecla == KEY_DOWN)*/
+            snake[0].y++;
+            break;
+        case ARRIBA:/*(tecla == KEY_LEFT)*/
+            snake[0].x--;
+            break;
+
+    }
+
+    snakepart last2;
+    for(int i=1;i<snake_length;i++){
+        last2 = snake[i];
+        snake[i] = last;
+        last = last2;
+    }
+}
+
+void comprueba(){
+
+}
+
+
+void bienvenida(){
+    clear();
+    mvprintw(row/2.5, col/2, "Welcome to the Classic Snake Game.\n");
+    mvprintw(row/2, col/2, "Press any key to continue.");
+    refresh();
+}
+
+void pierdes(){
+    clear();
+    mvprintw(row/2.5, col/2,"Fin de la partida.\n");
+    mvprintw(row/2, col/2, "Has perdido.");
+    refresh();
+}
+
+void ganas(){
+    clear();
+    mvprintw(row/2.5, col/2, "Fin de la partida.\n");
+    mvprintw(row/2, col/2, "Has ganado.");
+    refresh();
+}
+
+int main(){
+
+    initscr();
+    inicio();
+    foody.x = rand()%row;
+    foody.y = rand()%col;
+    noecho();
+    start_color();
+    init_pair(1,COLOR_YELLOW,COLOR_RED);
+    bkgd(COLOR_PAIR(1));
+    drawLevel();
+    keypad(stdscr, TRUE);
+    curs_set(0);
+    bienvenida();
+    getch();
+    clear();
+    inicio_snake();
+    ////dibujar_snake();
+    // dibujar_comida();
+    /*coges flecha
+     * mueves
+     *
+     * */
+    //pierdes();
+
+    while(1){
+        timeout(50);
+        obtener_tecla();
+        clear();
+        cambiar_direccion();
+        /*mover_snake();*/
+        comer();
+        dibujar_snake();
+        dibujar_comida();
+
+        refresh();
+        usleep(90000);
+    }
+    endwin();
+
+    return EXIT_SUCCESS;
+}
