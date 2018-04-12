@@ -13,7 +13,7 @@
 #define MAX_LENGTH 20
 #define SNAKE_CHARACTER '*'
 #define FOOD_CHARACTER '+'
-
+bool fruta = false;
 int row, col;
 int direccion;
 int snake_length = 1;
@@ -31,6 +31,7 @@ typedef struct{
 
 snakepart snake[MAX_LENGTH];
 food foody;
+
 
 void inicio(){
     getmaxyx(stdscr, row, col);
@@ -52,18 +53,29 @@ void dibujar_snake(){
             i++;
             */
     }
-    }
+}
 
     void dibujar_comida(){
-        foody.y = rand()%col;
-        foody.x = rand()%row;
         mvprintw(foody.x, foody.y, "%c", FOOD_CHARACTER);
 
     }
 
+
+
     void comer(){
-        if((snake[0].x == foody.x)&&(snake[0].y == foody.y))
-        dibujar_comida();
+        if((snake[0].x == foody.x)&&(snake[0].y == foody.y)){
+            snakepart cola = snake[snake_length-1];
+            snakepart nuevacola;
+            //CAMBIAR
+            nuevacola.x = cola.x+1;
+            nuevacola.y = cola.y+1;
+
+            snake[snake_length++] = nuevacola;
+
+            foody.y = rand()%col;
+            foody.x = rand()%row;
+
+        }
     }
 
     void obtener_tecla(){
@@ -89,7 +101,7 @@ void dibujar_snake(){
         /* int tecla = NULL;*/
 
         /*getch();*/
-        snakepart cabeza = snake[0];
+            snakepart last = snake[0];
         switch(direccion/*tecla*/){
             case IZQUIERDA:/*(tecla == KEY_UP)*/
                 snake[0].y--;
@@ -103,21 +115,21 @@ void dibujar_snake(){
             case ARRIBA:/*(tecla == KEY_LEFT)*/
                 snake[0].x--;
                 break;
+
         }
-        snake[0] = cabeza;
+
+        snakepart last2;
+      for(int i=1;i<snake_length;i++){
+          last2 = snake[i];
+          snake[i] = last;
+          last = last2;
+      }
     }
 
-void comprueba(){
+    void comprueba(){
 
-}
+    }
 
-void mover_snake(){
-    cambiar_direccion();
-    comprueba();
-
-
-
-}
 
     void bienvenida(){
         clear();
@@ -128,7 +140,7 @@ void mover_snake(){
 
     void pierdes(){
         clear();
-        mvprintw(row/2.5, col/2, "Fin de la partida.\n");
+        mvprintw(row/2.5, col/2,"Fin de la partida.\n");
         mvprintw(row/2, col/2, "Has perdido.");
         refresh();
     }
@@ -144,6 +156,8 @@ void mover_snake(){
 
         initscr();
         inicio();
+        foody.x = rand()%row;
+        foody.y = rand()%col;
         noecho();
         keypad(stdscr, TRUE);
         curs_set(0);
@@ -151,8 +165,8 @@ void mover_snake(){
         getch();
         clear();
         inicio_snake();
-        dibujar_snake();
-        dibujar_comida();
+        ////dibujar_snake();
+        // dibujar_comida();
         /*coges flecha
          * mueves
          *
@@ -163,12 +177,14 @@ void mover_snake(){
             timeout(50);
             obtener_tecla();
             clear();
-            mover_snake();
+            cambiar_direccion();
+            /*mover_snake();*/
+            comer();
             dibujar_snake();
             dibujar_comida();
 
             refresh();
-            usleep(100000);
+            usleep(90000);
         }
         endwin();
 
